@@ -8,10 +8,10 @@
 </p>
 ## EXAMPLE
 
--blacklist/save метод save
--blacklist/get метод get
--db.sql в корне проекта
--файл с вызовом методов класса app\Http\Controllers\BlacklistController.php
+- **blacklist/save метод save**
+- **blacklist/get метод get**
+- **db.sql в корне проекта**
+- **файл с вызовом методов класса app\Http\Controllers\BlacklistController.php**
 
 ## About Laravel
 
