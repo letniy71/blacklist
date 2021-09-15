@@ -18,5 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/blacklist',[BlacklistController::class,'show']);
-Route::get('/blacklist-get',[BlacklistController::class,'get']);
+Route::get('/blacklist/save',[BlacklistController::class,'save']);
+Route::get('/blacklist/get',[BlacklistController::class,'get']);

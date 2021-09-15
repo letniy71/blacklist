@@ -36,7 +36,7 @@ class Blacklists
 					$blacklist = new ModelBlackList;
 					if(isset($publisherId)){
 	    				$blacklist->publisher_id = $publisherId;
-	    				
+
 	    			} 
 	    			if(isset($siteId)){
 	    				$blacklist->site_id = $siteId;
@@ -53,6 +53,7 @@ class Blacklists
 
 	public static function get(int $id)
 	{
+		$arr = array();
 		$blacklists = ModelBlackList::where('advertiser_id',$id)->get();
 		foreach($blacklists as $blacklist){
 			foreach($blacklist->site as $site){
