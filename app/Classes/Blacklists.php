@@ -10,47 +10,60 @@ class Blacklists
 	public static function save(string $str, int $id)
 	{
 
-		$arr = explode(',',$str);
-
-		//Собираю двумерный массив из массива для publisher и site
-		foreach($arr as $elem)
+		$arrIds = explode(',',$str);
+		foreach($arrIds as $elem)
 		{
+			$publisherId = null;
+			$siteId = null;
+
 			//Обработка паблишер
 			if(preg_match('#p.+#',$elem))
-			{
-				$Ids['publisherIds'][] = substr($elem,1);
+			{	
+				$publisherId = substr($elem,1);
 			}
 			//Обработка сайтов
 			elseif(preg_match('#s.+#',$elem))
 			{
-				$Ids['siteIds'][] = substr($elem,1);
+				$siteId = substr($elem,1);
 			}
 
-		}
+
 			// проверяем на наличе данных в БД
 			if(null !== Advertisers::find($id))
 			{
 				$blacklist = new ModelBlackList;
-
-				if(!empty($publisherId)) //&& null !== Publishers::find($publisherId))
-				{
+				//проверяем есть существует ли паблишер в БД
+				if(isset($publisherId) && null !== Publishers::find($publisherId)){
     				$blacklist->publisher_id = $publisherId;
     			} 
-
-    			if(!empty($siteId)) //&& null !== Sites::find($siteId))
-    			{
+				//проверяем есть существует ли сайт в БД
+    			if(isset($siteId) && null !== Sites::find($siteId)){
     				$blacklist->site_id = $siteId;
     			}
     			$blacklist->advertiser_id = $id;
 
     			$blacklist->save();
 
-    			return $Ids;
-			} else
-			{
-				return 'net';
-			}	
-		
+    			
+			} 
+		}
+	}
+
+	public static function get(int $id)
+	{
+		$blacklists = ModelBlackList::where('id', $id)->get();
+		foreach ($blacklists as $elem) {
+    		return $elem;
+		}//implode(',', $blacklist);
 	}
 }
 
+
+
+/*try {
+        $user = User::findOrFail($request->input('user_id'));
+    } catch (ModelNotFoundException $exception) {
+        return back()->withError($exception->getMessage())->withInput();
+    }
+    return view('users.search', compact('user'));
+   */

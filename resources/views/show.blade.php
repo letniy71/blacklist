@@ -5,8 +5,9 @@
 	<title></title>
 </head>
 <body>
-	{{print_r($blacklist)}}
-	
+	@foreach($blacklist as $elem)
+	{{$elem->name}}
+	@endforeach
 
 </body>
 </html>

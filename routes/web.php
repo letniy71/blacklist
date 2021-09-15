@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::get('/blacklist',[BlacklistController::class,'show']);
+Route::get('/blacklist-get',[BlacklistController::class,'get']);
