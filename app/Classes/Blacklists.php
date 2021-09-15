@@ -31,18 +31,20 @@ class Blacklists
 			// проверяем на наличе данных в БД
 			if(null !== Advertisers::find($id))
 			{
-				$blacklist = new ModelBlackList;
-				//проверяем есть существует ли паблишер в БД
-				if(isset($publisherId) && null !== Publishers::find($publisherId)){
-    				$blacklist->publisher_id = $publisherId;
-    			} 
-				//проверяем есть существует ли сайт в БД
-    			if(isset($siteId) && null !== Sites::find($siteId)){
-    				$blacklist->site_id = $siteId;
-    			}
-    			$blacklist->advertiser_id = $id;
+				//проверяем есть существует ли паблишер или сайт в БД
+				if(null !== Publishers::find($publisherId) or null !== Sites::find($siteId)){
+					$blacklist = new ModelBlackList;
+					if(isset($publisherId)){
+	    				$blacklist->publisher_id = $publisherId;
+	    				
+	    			} 
+	    			if(isset($siteId)){
+	    				$blacklist->site_id = $siteId;
+	    			}
+	    			$blacklist->advertiser_id = $id;
 
-    			$blacklist->save();
+	    			$blacklist->save();
+	    		}
 
     			
 			} 
@@ -51,10 +53,23 @@ class Blacklists
 
 	public static function get(int $id)
 	{
-		$blacklists = ModelBlackList::where('id', $id)->get();
-		foreach ($blacklists as $elem) {
-    		return $elem;
-		}//implode(',', $blacklist);
+		$blacklists = ModelBlackList::where('advertiser_id',$id)->get();
+		foreach($blacklists as $blacklist){
+			foreach($blacklist->site as $site){
+				$arr[] = 's' .$site->id;
+			}
+			foreach($blacklist->publisher as $publisher){
+				$arr[] = 'p' . $publisher->id;
+			}
+		
+		}
+
+		$str = implode(',',$arr);
+
+
+
+
+		return $str;
 	}
 }
 

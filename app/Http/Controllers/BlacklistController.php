@@ -8,7 +8,7 @@ class BlacklistController extends Controller
 {
    public function show(){
 
-    $blacklist = Blacklists::save('p1,s1,p2,s1',4);
+    $blacklist = Blacklists::save('p1,s2,s3,s6,s5',1);
         //return view('show',['blacklist'=>$blacklist]);
     }
 
