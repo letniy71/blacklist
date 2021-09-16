@@ -9,45 +9,47 @@ class Blacklists
 {
 	public static function save(string $str, int $id)
 	{
+		// проверяем на наличе данных рекламодателя в БД
+		if(null == Advertisers::find($id))
+		{
+			throw new \Exception('The Advertisers is not in the DB!');
+		}
 
+		//формируем массив id паблишеров и сайтов
 		$arrIds = explode(',',$str);
 		foreach($arrIds as $elem)
 		{
 			$publisherId = null;
 			$siteId = null;
 
-			//Обработка паблишер
+			//Обработка паблишер , проверка на наличии в БД и генерирование исключения
 			if(preg_match('#p.+#',$elem))
 			{	
 				$publisherId = substr($elem,1);
+				if(null ==(Publishers::find($publisherId))){
+					throw new \Exception('The Publishers is not in the DB!');
+				}
 			}
-			//Обработка сайтов
+			//Обработка сайтов, проверка на наличии в БД и генерирование исключения
 			elseif(preg_match('#s.+#',$elem))
 			{
 				$siteId = substr($elem,1);
+				if(null ==(Sites::find($siteId))){
+					throw new \Exception('The Sites is not in the DB!');
+				}
 			}
 
-
-			// проверяем на наличе данных в БД
-			if(null !== Advertisers::find($id))
-			{
-				//проверяем есть существует ли паблишер или сайт в БД
-				if(null !== Publishers::find($publisherId) or null !== Sites::find($siteId)){
-					$blacklist = new ModelBlackList;
-					if(isset($publisherId)){
-	    				$blacklist->publisher_id = $publisherId;
-
-	    			} 
-	    			if(isset($siteId)){
-	    				$blacklist->site_id = $siteId;
-	    			}
-	    			$blacklist->advertiser_id = $id;
-
-	    			$blacklist->save();
-	    		}
-
-    			
+			//Создание новой записи
+			$blacklist = new ModelBlackList;
+	
+			if(isset($publisherId)){
+	    		$blacklist->publisher_id = $publisherId;
 			} 
+	    	if(isset($siteId)){
+	    		$blacklist->site_id = $siteId;
+	    	}
+	    	$blacklist->advertiser_id = $id;
+	    	$blacklist->save();
 		}
 	}
 
@@ -67,19 +69,6 @@ class Blacklists
 
 		$str = implode(',',$arr);
 
-
-
-
 		return $str;
 	}
 }
-
-
-
-/*try {
-        $user = User::findOrFail($request->input('user_id'));
-    } catch (ModelNotFoundException $exception) {
-        return back()->withError($exception->getMessage())->withInput();
-    }
-    return view('users.search', compact('user'));
-   */

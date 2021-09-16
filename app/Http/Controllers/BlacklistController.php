@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 class BlacklistController extends Controller
 {
    public function save(){
-
-    $blacklist = Blacklists::save('p1,s2,s3,s6,s5',1);
-        echo "Добавлено";
+      try{
+         // Если метод save()  возвращает true 
+         $blacklist = Blacklists::save('p222,s4',2);
+      } catch (Exception $e) {
+      // Если false - ловим брошенное из модели исключение 
+         echo $e->getMessage();
+      }
     }
 
     public function get(){
