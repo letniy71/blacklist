@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 ## EXAMPLE
-
+- **app/Classes/Blacklists.php - класс по работе с блеклистами**
 - **blacklist/save метод save**
 - **blacklist/get метод get**
 - **db.sql в корне проекта**
